@@ -96,6 +96,36 @@ RSpec.describe User, type: :model do
         user.valid?
         expect(user.errors.full_messages).to include("Password is invalid")
       end
+
+      it '重複したemailが存在する場合は登録できない' do
+        User.create(@user_params) # 一人目を保存
+        another_user = User.new(@user_params) # 二人目を同じ内容で作る
+        another_user.valid?
+        expect(another_user.errors.full_messages).to include('Email has already been taken')
+      end
+      
+      it 'emailに@を含まないと登録できない' do
+        @user_params[:email] = 'testexample.com'
+        user = User.new(@user_params)
+        user.valid?
+        expect(user.errors.full_messages).to include("Email is invalid")
+      end
+
+      it 'passwordとpassword_confirmationが不一致では登録できない' do
+        @user_params[:password] = '123456'
+        @user_params[:password_confirmation] = '1234567'
+        user = User.new(@user_params)
+        user.valid?
+        expect(user.errors.full_messages).to include("Password confirmation doesn't match Password")
+      end
+
+      it '全角文字を含むパスワードでは登録できない' do
+        @user_params[:password] = 'ａｂｃ１２３' # 全角
+        @user_params[:password_confirmation] = 'ａｂｃ１２３'
+        user = User.new(@user_params)
+        user.valid?
+        expect(user.errors.full_messages).to include("Password is invalid")
+      end
     end
   end
 end
