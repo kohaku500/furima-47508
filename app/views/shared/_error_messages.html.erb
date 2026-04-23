@@ -1,7 +1,10 @@
+<%# もしモデル（@userなど）に1つでもエラーが含まれていたら、以下の処理をします [cite: 341, 468] %>
 <% if model.errors.any? %>
 <div class="error-alert">
   <ul>
+    <%# 全てのエラーメッセージ（「名前を入力してください」など）を1つずつ取り出します [cite: 346, 473] %>
     <% model.errors.full_messages.each do |message| %>
+    <%# 繰り返しの開始 %>
     <li class='error-message'><%= message %></li>
     <% end %>
   </ul>
