@@ -24,5 +24,5 @@ class User < ApplicationRecord
 
   # パスワードのバリデーション（半角英数字混合のみ許可）
   # 英字のみ、数字のみのパスワードを弾き、セキュリティを高めます
-  validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i }
+  validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i }
 end

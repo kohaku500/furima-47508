@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @items = Item.all # ここは現在のトップページ用
+    @items = Item.includes(:user).order('created_at DESC')
   end
 
   # 出品ページ（入力フォーム）を表示する
@@ -15,15 +15,15 @@ class ItemsController < ApplicationController
   # 必要な情報を正しく入力して「出品する」ボタンを押すと、商品情報がデータベースに保存されること
   # 出品が完了したら、トップページに進むこと
   # エラーハンドリングができること（入力に問題がある状態で「出品する」ボタンが押された場合、情報は保存されず、出品ページに返品エラーメッセージが表示されること）
-def create
-  @item = Item.new(item_params)
-  if @item.save
-    redirect_to root_path
-  else
-    # 失敗したとき、エラーを持って出品ページを表示し直す
-    render :new, status: :unprocessable_entity
+  def create
+    @item = Item.new(item_params)
+    if @item.save
+      redirect_to root_path
+    else
+      # 失敗したとき、エラーを持って出品ページを表示し直す
+      render :new, status: :unprocessable_entity
+    end
   end
-end
 
   private
 
