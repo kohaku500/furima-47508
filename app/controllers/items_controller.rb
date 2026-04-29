@@ -7,13 +7,13 @@ class ItemsController < ApplicationController
     @items = Item.all.order('created_at DESC')
   end
 
-  def show
-    @item = Item.find(params[:id])
-  end
-
   # 出品ページ（入力フォーム）を表示する
   def new
     @item = Item.new
+  end
+
+  def edit
+    @item = Item.find(params[:id])
   end
 
   # 必要な情報を正しく入力して「出品する」ボタンを押すと、商品情報がデータベースに保存されること
