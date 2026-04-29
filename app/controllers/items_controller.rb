@@ -7,6 +7,10 @@ class ItemsController < ApplicationController
     @items = Item.all.order('created_at DESC')
   end
 
+  def show
+    @item = Item.find(params[:id])
+  end
+
   # 出品ページ（入力フォーム）を表示する
   def new
     @item = Item.new
