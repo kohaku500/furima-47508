@@ -1,54 +1,62 @@
 class ItemsController < ApplicationController
-  # ログイン状態の場合のみ、商品出品ページへ移行できること
-  # ログアウト状態の場合は、商品出品ページへ移行しようとすると、ログインページへ移行すること
-  before_action :authenticate_user!, only: [:new, :create]
+  # 1. 共通処理をアクションの実行前に呼び出す
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :set_item, only: [:show, :edit, :update]  
+  before_action :move_to_index, only: [:edit, :update]
 
   def index
     @items = Item.all.order('created_at DESC')
   end
 
   def show
-    @item = Item.find(params[:id])
+    # before_actionで@itemがセットされるため空でOK
   end
 
-  # 出品ページ（入力フォーム）を表示する
   def new
     @item = Item.new
   end
 
   def edit
-    @item = Item.find(params[:id])
+    # before_actionで@itemがセットされ、move_to_indexで出品者チェックも済んでいるため空でOK
   end
 
   def update
-    @item = Item.find(params[:id])
     if @item.update(item_params)
       redirect_to item_path(@item)
     else
+      # エラーがある場合は編集画面を再表示（statusを指定してRails 7以降の挙動に対応）
       render :edit, status: :unprocessable_entity
     end
   end
 
-  # 必要な情報を正しく入力して「出品する」ボタンを押すと、商品情報がデータベースに保存されること
-  # 出品が完了したら、トップページに進むこと
-  # エラーハンドリングができること（入力に問題がある状態で「出品する」ボタンが押された場合、情報は保存されず、出品ページに返品エラーメッセージが表示されること）
   def create
     @item = Item.new(item_params)
     if @item.save
       redirect_to root_path
     else
-      # 失敗したとき、エラーを持って出品ページを表示し直す
       render :new, status: :unprocessable_entity
     end
   end
 
   private
 
-  # ストロングパラメーターの設定
+  # ストロングパラメーター
   def item_params
     params.require(:item).permit(
       :image, :name, :info, :category_id, :sales_status_id,
       :shipping_fee_status_id, :prefecture_id, :scheduled_delivery_id, :price
     ).merge(user_id: current_user.id)
+  end
+
+  # 特定の商品を1箇所で取得する設定
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+  # 出品者以外をトップページへ戻す設定
+  def move_to_index
+    unless current_user.id == @item.user_id
+      redirect_to root_path
+    end
   end
 end
