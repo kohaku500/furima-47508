@@ -20,6 +20,15 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
   end
 
+  def update
+    @item = Item.find(params[:id])
+    if @item.update(item_params)
+      redirect_to item_path(@item)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   # 必要な情報を正しく入力して「出品する」ボタンを押すと、商品情報がデータベースに保存されること
   # 出品が完了したら、トップページに進むこと
   # エラーハンドリングができること（入力に問題がある状態で「出品する」ボタンが押された場合、情報は保存されず、出品ページに返品エラーメッセージが表示されること）
