@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   # 1. 共通処理をアクションの実行前に呼び出す
   before_action :authenticate_user!, except: [:index, :show]
-  before_action :set_item, only: [:show, :edit, :update]  
+  before_action :set_item, only: [:show, :edit, :update]
   before_action :move_to_index, only: [:edit, :update]
 
   def index
@@ -55,8 +55,8 @@ class ItemsController < ApplicationController
 
   # 出品者以外をトップページへ戻す設定
   def move_to_index
-    unless current_user.id == @item.user_id
-      redirect_to root_path
-    end
+    return if current_user.id == @item.user_id
+
+    redirect_to root_path
   end
 end
