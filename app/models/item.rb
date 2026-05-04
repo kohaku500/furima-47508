@@ -8,6 +8,7 @@ class Item < ApplicationRecord
   belongs_to :scheduled_delivery
 
   has_one_attached :image
+  has_one :order
 
   validates :image, :name, :info, :price, presence: true
   validates :category_id, :sales_status_id, :shipping_fee_status_id, :prefecture_id, :scheduled_delivery_id,

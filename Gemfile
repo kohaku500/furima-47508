@@ -64,6 +64,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 4.0.0'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'pry-rails'
 end
 
 group :test do
@@ -85,5 +86,7 @@ gem "ruby-lsp" end
 # PostgreSQLのgemです
 group :production do
   gem 'pg'
-
 end
+
+gem 'dotenv-rails'
+gem 'payjp'
