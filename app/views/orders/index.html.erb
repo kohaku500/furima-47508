@@ -29,10 +29,9 @@
       </p>
     </div>
 
-    <%# フォームの開始：modelとurlを指定します %>
     <%= form_with model: @order_address, url: item_orders_path(@item), id: 'charge-form', class: 'transaction-form-wrap',local: true do |f| %>
+    <%= render 'shared/error_messages', model: f.object %>
     
-    <%# クレジットカード入力部分 %>
     <div class='credit-card-form'>
       <h1 class='info-input-haedline'>
         クレジットカード情報入力
