@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :items
+  has_many :orders
   # Deviseの標準的な5つの機能（モジュール）を有効にします
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable

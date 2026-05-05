@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
   end
 
   def set_item
-    @item = Item.find(params[:item_id])
+    #  set_itemメソッドにより@itemはすでに定義されているため、ここの記述は不要
   end
 
   # ↓ 追記：アクセス制限のロジック
