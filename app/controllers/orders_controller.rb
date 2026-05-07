@@ -7,7 +7,6 @@ class OrdersController < ApplicationController
 
   def index
     @order_address = OrderAddress.new
-    redirect_to root_path if current_user.id == @item.user_id || @item.order.present?
   end
 
   def create
@@ -32,14 +31,13 @@ class OrdersController < ApplicationController
   end
 
   def set_item
-    #  set_itemメソッドにより@itemはすでに定義されているため、ここの記述は不要
+    @item = Item.find(params[:item_id])
   end
 
   # ↓ 追記：アクセス制限のロジック
   def move_to_index
-    # 「ログインユーザーが出品者である」または「商品が売却済みである」場合
+    redirect_to new_user_session_path unless current_user
     return unless current_user.id == @item.user_id || @item.order.present?
-
     redirect_to root_path
   end
 
