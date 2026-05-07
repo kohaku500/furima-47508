@@ -32,8 +32,7 @@
 
     <%= form_with model: @order_address, url: item_orders_path(@item), id: 'charge-form', class: 'transaction-form-main', local: true do |f| %>
     <%= render 'shared/error_messages', model: f.object %>
-
-    <%# カード情報の入力 %>
+    <%= f.hidden_field :token, id: 'token' %>      
     <div class='credit-card-form'>
       <h1 class='focused'>
         クレジットカード情報入力
