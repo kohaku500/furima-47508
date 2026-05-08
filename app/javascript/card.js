@@ -33,6 +33,7 @@ const pay = () => {
     payjp.createToken(numberElement).then(function (response) {
       if (response.error) {
         console.log(response.error.message);
+        return;
       } else {
         const token = response.id;
         const renderDom = document.getElementById("charge-form");
