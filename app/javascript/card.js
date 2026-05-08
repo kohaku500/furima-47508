@@ -5,8 +5,18 @@ const pay = () => {
     return;
   }
 
-  // 公開鍵をmetaタグから取得
-  const publicKey = document.querySelector('meta[name="payjp-public-key"]').content;
+  // 公開鍵をmetaタグから取得（デバッグ用コンソール出力を追加）
+  const metaTag = document.querySelector('meta[name="payjp-public-key"]');
+  console.log('Meta tag:', metaTag);
+  console.log('Public key:', metaTag ? metaTag.content : 'NOT FOUND');
+  
+  const publicKey = metaTag.content;
+  
+  if (!publicKey || publicKey === '') {
+    console.error('Public key is empty or not found!');
+    return;
+  }
+  
   const payjp = Payjp(publicKey);
   const elements = payjp.elements();
   const numberElement = elements.create('cardNumber');
