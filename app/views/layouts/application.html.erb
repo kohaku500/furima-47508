@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <meta name="payjp-public-key" content="<%= ENV["PAYJP_PUBLIC_KEY"] %>">
+  <meta name="payjp-public-key" content="<%= @payjp_public_key %>">
   <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
   <script src="https://js.pay.jp/v2/pay.js"></script>

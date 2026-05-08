@@ -7,6 +7,7 @@ class OrdersController < ApplicationController
 
   def index
     @order_address = OrderAddress.new
+    @payjp_public_key = ENV["PAYJP_PUBLIC_KEY"]
   end
 
   def create
