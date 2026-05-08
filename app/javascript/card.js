@@ -1,4 +1,10 @@
 const pay = () => {
+  // 購入ページ以外では実行しない
+  const numberFormElement = document.querySelector('#number-form');
+  if (!numberFormElement) {
+    return;
+  }
+
   // 公開鍵をmetaタグから取得
   const publicKey = document.querySelector('meta[name="payjp-public-key"]').content;
   const payjp = Payjp(publicKey);
