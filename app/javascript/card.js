@@ -1,15 +1,12 @@
+let elementsInstance = null;
+
 const pay = () => {
-  // 購入ページ以外では実行しない
   const numberFormElement = document.querySelector('#number-form');
   if (!numberFormElement) {
     return;
   }
 
-  // 公開鍵をmetaタグから取得（デバッグ用コンソール出力を追加）
   const metaTag = document.querySelector('meta[name="payjp-public-key"]');
-  console.log('Meta tag:', metaTag);
-  console.log('Public key:', metaTag ? metaTag.content : 'NOT FOUND');
-  
   const publicKey = metaTag.content;
   
   if (!publicKey || publicKey === '') {
@@ -26,10 +23,17 @@ const pay = () => {
   numberElement.mount('#number-form');
   expiryElement.mount('#expiry-form');
   cvcElement.mount('#cvc-form');
+
+  elementsInstance = {
+    numberElement,
+    expiryElement,
+    cvcElement
+  };
   
   const form = document.getElementById('charge-form');
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+    
     payjp.createToken(numberElement).then(function (response) {
       if (response.error) {
         console.log(response.error.message);
@@ -39,11 +43,12 @@ const pay = () => {
         const renderDom = document.getElementById("charge-form");
         const tokenObj = `<input value=${token} name='token' type="hidden">`;
         renderDom.insertAdjacentHTML("beforeend", tokenObj);
+
+        numberElement.clear();
+        expiryElement.clear();
+        cvcElement.clear();        
+        document.getElementById("charge-form").submit();
       }
-      numberElement.clear();
-      expiryElement.clear();
-      cvcElement.clear();
-      document.getElementById("charge-form").submit();
     });
   });
 };
